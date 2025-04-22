@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getPlants } from '../api/plantAPI';
+import { getPlants } from '../api/plantActions';
+
 import PlantStats from '../components/PlantStats';
 import { Container } from 'react-bootstrap';
 

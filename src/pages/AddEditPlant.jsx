@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addPlant, updatePlant } from '../api/plantAPI';
+import { addPlant, updatePlant } from '../api/plantActions';
 import { Form, Button, Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 

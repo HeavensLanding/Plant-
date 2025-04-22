@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getPlants, deletePlant, addPlant, updatePlant } from '../api/plantAPI';
+import { getPlants, deletePlant, addPlant, updatePlant } from '../api/plantActions';
 import { Button, Row, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
