@@ -1,0 +1,44 @@
+/* src/components/Navbar.css */
+
+.lux-navbar {
+    background: linear-gradient(90deg, #b76e79, #ffd700);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #c0c0c0;
+    padding: 0.75rem 1rem;
+  }
+  
+  .lux-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+    letter-spacing: 1px;
+  }
+  
+  .lux-link {
+    font-weight: 500;
+    color: white !important;
+    margin-left: 1rem;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .lux-link::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+  }
+  
+  .lux-link:hover::after {
+    width: 100%;
+  }
+  
+  .lux-link:hover {
+    color: #fdf7f2 !important;
+  }
+  

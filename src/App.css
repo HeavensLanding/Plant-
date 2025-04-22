@@ -1,0 +1,239 @@
+/* ---------- THEME COLORS ---------- */
+:root {
+  --rose-gold: #b76e79;
+  --yellow-gold: #ffd700;
+  --silver: #c0c0c0;
+  --rich-cream: #fdf7f2;
+  --text-dark: #2e2e2e;
+}
+
+/* ---------- GLOBAL STYLES ---------- */
+body {
+  background-color: var(--rich-cream);
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  color: var(--rose-gold);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- CONTAINER PADDING ---------- */
+.container {
+  padding-bottom: 5rem;
+}
+
+/* ---------- BUTTON STYLES ---------- */
+.btn {
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 1.25rem;
+}
+
+.btn-success {
+  background-color: var(--rose-gold);
+  border-color: var(--rose-gold);
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #a35561;
+}
+
+.btn-warning {
+  background-color: var(--yellow-gold);
+  border-color: var(--yellow-gold);
+  color: var(--text-dark);
+}
+
+.btn-danger {
+  background-color: #e57373;
+  border-color: #e57373;
+}
+
+.btn:hover {
+  opacity: 0.95;
+}
+
+/* ---------- CARD STYLES ---------- */
+.card {
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--silver);
+  background-color: white;
+  box-shadow: 0 4px 20px rgba(183, 110, 121, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 0;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+  border-color: var(--yellow-gold);
+}
+
+.card-body {
+  position: relative;
+  z-index: 2;
+}
+
+/* ========== CUSTOM GLITTER ========== */
+@keyframes sparkle-glow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.card.sparkle-hover {
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(183, 110, 121, 0.15) 20%,
+    rgba(255, 215, 0, 0.3) 40%,
+    rgba(192, 192, 192, 0.2) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 200%;
+  animation: sparkle-glow 1.5s linear infinite;
+  border-color: var(--yellow-gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+
+/* ---------- TOASTIFY OVERRIDES ---------- */
+.Toastify__toast--success {
+  background: var(--rose-gold);
+  color: #fff;
+  font-weight: bold;
+  border-left: 6px solid var(--yellow-gold);
+  box-shadow: 0 4px 10px rgba(183, 110, 121, 0.4);
+}
+
+.Toastify__toast--error {
+  background: #e57373;
+  color: white;
+}
+.Toastify__toast {
+  border-radius: 16px;
+  animation: fadeSlideIn 0.5s ease-in-out;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* ---------- FLOATING ADD BUTTON ---------- */
+.add-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background-color: var(--yellow-gold);
+  border: none;
+  color: var(--text-dark);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  transition: 0.3s ease;
+  text-decoration: none;
+}
+
+.add-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+  text-decoration: none;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  padding: 2rem;
+  background: linear-gradient(
+    to right,
+    var(--yellow-gold),
+    var(--rose-gold)
+  );
+  color: #fff;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/*-----form control--------*/
+input.form-control {
+  border: 2px solid var(--rose-gold);
+  background-color: #fffaf9;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+input.form-control:focus {
+  border-color: var(--yellow-gold);
+  box-shadow: 0 0 8px rgba(183, 110, 121, 0.4);
+}
+
+/*-------widget styling-----*/
+.card-title {
+  color: var(--rose-gold);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.card-text {
+  font-weight: 500;
+}
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--rose-gold);
+}
+
+p {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+}
+/* -----force toast to close-------*/
+.Toastify__toast {
+  animation: fade-out-clean 3s forwards !important;
+}
+
+@keyframes fade-out-clean {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+
+.card p {
+  font-size: 0.9rem;
+}
+
