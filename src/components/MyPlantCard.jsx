@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import NextWaterDate from './NextWaterDate';
 import { format, parseISO } from 'date-fns';
 
-function MyPlantCard({ plant, onDelete, onWater }) {
+function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive, isArchived }) {
   let formattedLastWatered = 'N/A';
 
   try {
@@ -50,11 +50,13 @@ function MyPlantCard({ plant, onDelete, onWater }) {
                 .reverse()
                 .map((date, idx) => {
                   try {
-                    const prettyDate =
-                      typeof date === 'string'
-                        ? format(parseISO(date), 'MMMM d, yyyy')
-                        : 'N/A';
-                    return <li key={idx}>{prettyDate}</li>;
+                    return (
+                      <li key={idx}>
+                        {typeof date === 'string'
+                          ? format(parseISO(date), 'MMMM d, yyyy')
+                          : 'N/A'}
+                      </li>
+                    );
                   } catch (e) {
                     console.warn(`❌ Bad date format at index ${idx}`, date);
                     return null;
@@ -64,43 +66,61 @@ function MyPlantCard({ plant, onDelete, onWater }) {
           </div>
         )}
 
-        <div className="d-flex justify-content-between align-items-center mt-4">
-          <Button
-            variant="info"
-            onClick={() => onWater(plant.id)}
-            className="fw-bold"
-            style={{ borderRadius: '30px' }}
-          >
-            💧 Water
-          </Button>
-
-          <div className="d-flex flex-column align-items-end">
-            <div className="d-flex gap-2 mb-2">
+        <div className="d-flex justify-content-between mt-4">
+          <div className="d-flex flex-column">
+            {!isArchived && (
               <Button
-                variant="danger"
+                variant="info"
+                onClick={() => onWater?.(plant.id)}
+                className="fw-bold mb-2"
+                style={{ borderRadius: '30px' }}
+              >
+                💧 Water
+              </Button>
+            )}
+
+            {isArchived ? (
+              <Button
+                variant="outline-success"
                 size="sm"
-                onClick={() => onDelete(plant.id)}
+                onClick={() => onUnarchive?.(plant.id)}
                 className="fw-semibold"
                 style={{ borderRadius: '30px' }}
               >
-                Delete
+                ♻️ Unarchive
               </Button>
-              <Link
-                to={`/edit/${plant.id}`}
-                className="btn btn-warning btn-sm fw-semibold"
+            ) : (
+              <Button
+                variant="outline-secondary"
+                size="sm"
+                onClick={() => onArchive?.(plant.id)}
+                className="fw-semibold"
                 style={{ borderRadius: '30px' }}
               >
-                Edit
-              </Link>
-            </div>
+                📦 Archive
+              </Button>
+            )}
+          </div>
 
-            <Link
-              to={`/plant/${plant.id}`}
-              className="btn btn-outline-secondary btn-sm fw-semibold"
+          <div className="d-flex flex-column text-end">
+            {!isArchived && (
+              <Link
+                to={`/edit/${plant.id}`}
+                className="btn btn-warning btn-sm fw-semibold mb-2"
+                style={{ borderRadius: '30px' }}
+              >
+                ✏️ Edit
+              </Link>
+            )}
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => onDelete(plant.id)}
+              className="fw-semibold"
               style={{ borderRadius: '30px' }}
             >
-              View Details
-            </Link>
+              ❌ Delete
+            </Button>
           </div>
         </div>
       </Card.Body>

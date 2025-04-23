@@ -61,3 +61,23 @@ export const markPlantWatered = async (id, currentHistory = []) => {
     return null;
   }
 };
+// ✅ Archive a plant
+export const archivePlant = async (id) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/${id}`, { archived: true });
+    return response.data;
+  } catch (error) {
+    console.error('Error archiving plant:', error);
+    return null;
+  }
+};
+
+export const getArchivedPlants = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}?archived=true`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching archived plants:', error);
+    return [];
+  }
+};

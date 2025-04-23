@@ -1,0 +1,14 @@
+.greenroom-title {
+    color: var(--rose-gold);
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  
+  .greenroom-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+  }
+  

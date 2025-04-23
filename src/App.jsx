@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Default toast styles
 import PlantDetails from './components/PlantDetails';
+import Greenroom from './pages/Greenroom';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/add" element={<AddEditPlant />} />
           <Route path="/edit/:id" element={<AddEditPlant />} />
           <Route path="/plant/:id" element={<PlantDetails />} />
+          <Route path="/greenroom" element={<Greenroom />} />
         </Routes>
       </main>
 
