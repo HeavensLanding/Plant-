@@ -48,6 +48,15 @@ function AppNavbar() {
             >
                  Greenroom
             </NavLink>
+            <NavLink
+                to="/seed-bucket"
+                className={({ isActive }) =>
+                isActive ? 'lux-link active' : 'lux-link'
+                }
+            >
+                The Seed Bucket
+            </NavLink>
+
 
           </Nav>
         </Navbar.Collapse>

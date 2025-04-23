@@ -65,7 +65,7 @@ function AddEditPlant() {
 
   return (
     <div className="d-flex justify-content-center">
-      <Card style={{ maxWidth: '600px', width: '100%' }} className="p-4 shadow">
+      <Card style={{ maxWidth: '600px', width: '100%' }} className="p-4 shadow add-plant-card">
         <h2 className="text-center mb-4">{id ? 'Edit Plant' : 'Add New Plant'}</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
@@ -89,7 +89,7 @@ function AddEditPlant() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Water Schedule (e.g. every 7 days)</Form.Label>
+            <Form.Label>Water Schedule (in days)</Form.Label>
             <Form.Control
               type="text"
               value={water_schedule}

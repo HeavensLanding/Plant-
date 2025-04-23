@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Default toast styles
 import PlantDetails from './components/PlantDetails';
 import Greenroom from './pages/Greenroom';
+import SeedBucket from './pages/SeedBucket';
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
     <>
       <AppNavbar />
 
-      <main className="container mt-4">
+      <main className="page-wrapper">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/my-plants" element={<MyPlants />} />
@@ -23,6 +24,7 @@ function App() {
           <Route path="/edit/:id" element={<AddEditPlant />} />
           <Route path="/plant/:id" element={<PlantDetails />} />
           <Route path="/greenroom" element={<Greenroom />} />
+          <Route path="/seed-bucket" element={<SeedBucket />} />
         </Routes>
       </main>
 

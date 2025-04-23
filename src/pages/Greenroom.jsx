@@ -22,7 +22,7 @@ function Greenroom() {
   return (
     <div className="greenroom-wrapper">
       <h2 className="greenroom-title">Greenroom</h2>
-      <p className="greenroom-subtitle">Your peaceful archive of past plants</p>
+      <p className="row justify-content-center mt-4 greenroom-subtitle ">Your peaceful archive of past plants</p>
 
       <div className="row justify-content-center mt-4">
         {archivedPlants.length === 0 ? (
