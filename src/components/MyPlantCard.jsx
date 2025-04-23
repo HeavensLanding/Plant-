@@ -74,22 +74,32 @@ function MyPlantCard({ plant, onDelete, onWater }) {
             💧 Water
           </Button>
 
-          <div>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => onDelete(plant.id)}
-              className="me-2 fw-semibold"
-              style={{ borderRadius: '30px' }}
-            >
-              Delete
-            </Button>
+          <div className="d-flex flex-column align-items-end">
+            <div className="d-flex gap-2 mb-2">
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => onDelete(plant.id)}
+                className="fw-semibold"
+                style={{ borderRadius: '30px' }}
+              >
+                Delete
+              </Button>
+              <Link
+                to={`/edit/${plant.id}`}
+                className="btn btn-warning btn-sm fw-semibold"
+                style={{ borderRadius: '30px' }}
+              >
+                Edit
+              </Link>
+            </div>
+
             <Link
-              to={`/edit/${plant.id}`}
-              className="btn btn-warning btn-sm fw-semibold"
+              to={`/plant/${plant.id}`}
+              className="btn btn-outline-secondary btn-sm fw-semibold"
               style={{ borderRadius: '30px' }}
             >
-              Edit
+              View Details
             </Link>
           </div>
         </div>

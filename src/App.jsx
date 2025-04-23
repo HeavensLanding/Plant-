@@ -6,6 +6,7 @@ import AppNavbar from './components/Navbar';
 import Footer from './components/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Default toast styles
+import PlantDetails from './components/PlantDetails';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/my-plants" element={<MyPlants />} />
           <Route path="/add" element={<AddEditPlant />} />
           <Route path="/edit/:id" element={<AddEditPlant />} />
+          <Route path="/plant/:id" element={<PlantDetails />} />
         </Routes>
       </main>
 
