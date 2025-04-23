@@ -11,4 +11,36 @@
     margin-top: -0.5rem;
     margin-bottom: 2rem;
   }
+  .greenroom-wrapper {
+    background-image: url('/public/leaf_background.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    color: var(--text-dark);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .greenroom-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7); /* Soft overlay to ensure readability */
+    z-index: -1;
+  }
+  
+  .greenroom-title {
+    font-size: 2.5rem;
+    color: var(--rose-gold);
+    font-family: 'Cursive', 'Poppins', sans-serif;
+    margin-bottom: 0.5rem;
+  }
+  
+  .greenroom-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    font-style: italic;
+    margin-bottom: 2rem;
+  }
   

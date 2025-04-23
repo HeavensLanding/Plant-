@@ -1,106 +1,82 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Card, Button, Spinner } from 'react-bootstrap';
-import { getPlants } from '../api/PlantActions';
+import { useParams } from 'react-router-dom';
+import { getPlants, updatePlant } from '../api/PlantActions';
+import { Card, Form, Button } from 'react-bootstrap';
 import { format, parseISO } from 'date-fns';
+import '../PlantDetails.css';
 
 function PlantDetails() {
   const { id } = useParams();
   const [plant, setPlant] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [notes, setNotes] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchPlant = async () => {
-      try {
-        const plants = await getPlants();
-        const match = plants.find(p => p.id === id);
-        setPlant(match || null);
-      } catch (error) {
-        console.error('Error loading plant:', error);
-      } finally {
-        setLoading(false);
+      const allPlants = await getPlants();
+      const found = allPlants.find((p) => p.id === id);
+      if (found) {
+        setPlant(found);
+        setNotes(found.notes || '');
       }
     };
     fetchPlant();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="text-center mt-5">
-        <Spinner animation="border" variant="warning" />
-        <p>Loading plant details...</p>
-      </div>
-    );
-  }
+  const handleSaveNotes = async () => {
+    if (!plant) return;
+    setSaving(true);
+    const updated = await updatePlant(plant.id, { ...plant, notes });
+    setPlant(updated);
+    setSaving(false);
+  };
 
-  if (!plant) {
-    return (
-      <div className="text-center mt-5">
-        <h2>Plant not found</h2>
-        <Link to="/my-plants" className="btn btn-outline-secondary mt-3">
-          Back to My Plants
-        </Link>
-      </div>
-    );
-  }
-
-  let formattedLastWatered = 'N/A';
-  try {
-    if (typeof plant.last_watered === 'string') {
-      formattedLastWatered = format(parseISO(plant.last_watered), 'MMMM d, yyyy');
-    } else if (typeof plant.last_watered === 'number') {
-      formattedLastWatered = format(new Date(plant.last_watered * 1000), 'MMMM d, yyyy');
-    }
-  } catch (error) {
-    console.warn('Bad last_watered value:', plant.last_watered);
-  }
+  if (!plant) return <p className="text-center mt-5">Loading plant details...</p>;
 
   return (
-    <div className="d-flex justify-content-center">
-      <Card className="plant-card shadow p-4" style={{ maxWidth: '600px', width: '100%' }}>
-        <Card.Body>
-          <Card.Title className="text-center fs-3" style={{ color: 'var(--rose-gold)' }}>
-            {plant.name}
-          </Card.Title>
-          <Card.Text className="mt-3">
-            <strong>🌿 Type:</strong> {plant.type || 'N/A'} <br />
-            <strong>🗓️ Last Watered:</strong> {formattedLastWatered} <br />
-            <strong>⏳ Water Schedule (Days):</strong>{' '}
-            {typeof plant.water_schedule === 'string'
-              ? plant.water_schedule.match(/\d+/)?.[0] || 'N/A'
-              : 'N/A'}
-          </Card.Text>
+    <Card className="leafy-card shadow-lg mx-auto p-4 mt-4" style={{ maxWidth: '800px' }}>
+      <h2 className="text-center mb-3" style={{ color: 'var(--rose-gold)' }}>
+        {plant.name}
+      </h2>
 
-          {Array.isArray(plant.water_history) && plant.water_history.length > 0 && (
-            <div className="mt-3">
-              <strong>💧 Water History:</strong>
-              <ul className="ps-3">
-                {plant.water_history
-                  .slice()
-                  .reverse()
-                  .map((date, index) => {
-                    try {
-                      const prettyDate =
-                        typeof date === 'string'
-                          ? format(parseISO(date), 'MMMM d, yyyy')
-                          : 'N/A';
-                      return <li key={index}>{prettyDate}</li>;
-                    } catch (error) {
-                      return null;
-                    }
-                  })}
-              </ul>
-            </div>
-          )}
+      <p><strong>🌿 Type:</strong> {plant.type}</p>
+      <p><strong>🗓️ Last Watered:</strong> {plant.last_watered ? format(parseISO(plant.last_watered), 'MMMM d, yyyy') : 'N/A'}</p>
+      <p><strong>⏳ Water Schedule:</strong> {plant.water_schedule}</p>
 
-          <div className="text-center mt-4">
-            <Link to="/my-plants" className="btn btn-outline-secondary">
-              ← Back to My Plants
-            </Link>
-          </div>
-        </Card.Body>
-      </Card>
-    </div>
+      {Array.isArray(plant.water_history) && plant.water_history.length > 0 && (
+        <div className="mt-3">
+          <strong>💧 Full Water History:</strong>
+          <ul>
+            {plant.water_history.slice().reverse().map((date, idx) => (
+              <li key={idx}>
+                {typeof date === 'string' ? format(parseISO(date), 'MMMM d, yyyy') : 'N/A'}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <Form className="mt-4">
+        <Form.Group controlId="plantNotes">
+          <Form.Label><strong>📝 Notes</strong></Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="Enter notes about this plant..."
+          />
+        </Form.Group>
+        <Button
+          variant="success"
+          className="mt-3"
+          onClick={handleSaveNotes}
+          disabled={saving}
+        >
+          {saving ? 'Saving...' : 'Save Notes'}
+        </Button>
+      </Form>
+    </Card>
   );
 }
 

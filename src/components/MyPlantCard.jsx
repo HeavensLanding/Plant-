@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import NextWaterDate from './NextWaterDate';
 import { format, parseISO } from 'date-fns';
 
-function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive, isArchived }) {
+function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive }) {
   let formattedLastWatered = 'N/A';
 
   try {
@@ -19,7 +19,6 @@ function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive, isArchi
   return (
     <Card className="plant-card mb-4">
       <Card.Body className="card-body position-relative">
-        {/* ✨ Sparkle shimmer layer */}
         <div className="sparkle-overlay" />
 
         <Card.Title className="text-center fs-4" style={{ color: 'var(--rose-gold)' }}>
@@ -35,65 +34,45 @@ function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive, isArchi
             : 'N/A'}
         </Card.Text>
 
-        <NextWaterDate
-          lastWatered={plant.last_watered}
-          schedule={plant.water_schedule}
-        />
+        <NextWaterDate lastWatered={plant.last_watered} schedule={plant.water_schedule} />
 
-        {/* 💧 Water History */}
-        {Array.isArray(plant.water_history) && plant.water_history.length > 0 && (
-          <div style={{ marginTop: '1rem' }}>
-            <strong>💧 Watered On:</strong>
-            <ul className="ps-3 mb-2">
-              {plant.water_history
-                .slice()
-                .reverse()
-                .map((date, idx) => {
-                  try {
-                    return (
-                      <li key={idx}>
-                        {typeof date === 'string'
-                          ? format(parseISO(date), 'MMMM d, yyyy')
-                          : 'N/A'}
-                      </li>
-                    );
-                  } catch (e) {
-                    console.warn(`❌ Bad date format at index ${idx}`, date);
-                    return null;
-                  }
-                })}
-            </ul>
-          </div>
-        )}
+        {/* View Details Button */}
+        <div className="text-center mt-3">
+          <Link
+            to={`/plant/${plant.id}`}
+            className="btn btn-outline-secondary btn-sm fw-semibold"
+            style={{ borderRadius: '30px' }}
+          >
+            🔍 View Details
+          </Link>
+        </div>
 
         <div className="d-flex justify-content-between mt-4">
           <div className="d-flex flex-column">
-            {!isArchived && (
-              <Button
-                variant="info"
-                onClick={() => onWater?.(plant.id)}
-                className="fw-bold mb-2"
-                style={{ borderRadius: '30px' }}
-              >
-                💧 Water
-              </Button>
-            )}
+            <Button
+              variant="info"
+              onClick={() => onWater(plant.id)}
+              className="fw-bold mb-2"
+              style={{ borderRadius: '30px' }}
+            >
+              💧 Water
+            </Button>
 
-            {isArchived ? (
+            {plant.archived ? (
               <Button
                 variant="outline-success"
                 size="sm"
-                onClick={() => onUnarchive?.(plant.id)}
+                onClick={() => onUnarchive(plant.id)}
                 className="fw-semibold"
                 style={{ borderRadius: '30px' }}
               >
-                ♻️ Unarchive
+                🌱 Unarchive
               </Button>
             ) : (
               <Button
                 variant="outline-secondary"
                 size="sm"
-                onClick={() => onArchive?.(plant.id)}
+                onClick={() => onArchive(plant.id)}
                 className="fw-semibold"
                 style={{ borderRadius: '30px' }}
               >
@@ -103,15 +82,13 @@ function MyPlantCard({ plant, onDelete, onWater, onArchive, onUnarchive, isArchi
           </div>
 
           <div className="d-flex flex-column text-end">
-            {!isArchived && (
-              <Link
-                to={`/edit/${plant.id}`}
-                className="btn btn-warning btn-sm fw-semibold mb-2"
-                style={{ borderRadius: '30px' }}
-              >
-                ✏️ Edit
-              </Link>
-            )}
+            <Link
+              to={`/edit/${plant.id}`}
+              className="btn btn-warning btn-sm fw-semibold mb-2"
+              style={{ borderRadius: '30px' }}
+            >
+              ✏️ Edit
+            </Link>
             <Button
               variant="danger"
               size="sm"

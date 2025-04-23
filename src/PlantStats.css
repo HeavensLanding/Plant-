@@ -1,0 +1,42 @@
+.dashboard-heading {
+    font-size: 2rem;
+    color: var(--rose-gold);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    font-family: 'Cursive', 'Poppins', sans-serif;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-stat {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(183, 110, 121, 0.2);
+  }
+  
+  .plant-stats-widget {
+    background-image: url('/public/leaf_background.jpg');
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    padding: 2rem;
+    color: var(--text-dark);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Optional: a soft white overlay to keep text readable */
+  .plant-stats-widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.6); 
+    z-index: -1;
+    border-radius: 20px;
+  }
+  

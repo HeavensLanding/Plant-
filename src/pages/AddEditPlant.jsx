@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import { addPlant, updatePlant, getPlants } from '../api/PlantActions';
 import { toast } from 'react-toastify';
-import { format } from 'date-fns';
 
 function AddEditPlant() {
   const navigate = useNavigate();
@@ -13,6 +12,7 @@ function AddEditPlant() {
   const [type, setType] = useState('');
   const [water_schedule, setWaterSchedule] = useState('');
   const [last_watered, setLastWatered] = useState('');
+  const [notes, setNotes] = useState('');
 
   useEffect(() => {
     const fetchPlant = async () => {
@@ -24,6 +24,7 @@ function AddEditPlant() {
           setType(existing.type);
           setWaterSchedule(existing.water_schedule);
           setLastWatered(existing.last_watered || '');
+          setNotes(existing.notes || '');
         }
       } catch (error) {
         console.error('Error fetching plant:', error);
@@ -43,10 +44,9 @@ function AddEditPlant() {
       type,
       water_schedule,
       last_watered,
+      notes,
       water_history: last_watered ? [last_watered] : []
     };
-
-    console.log('🌿 Submitting:', plantData);
 
     try {
       if (id) {
@@ -104,6 +104,17 @@ function AddEditPlant() {
               type="date"
               value={last_watered}
               onChange={(e) => setLastWatered(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-4">
+            <Form.Label>Notes</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Enter notes about this plant..."
             />
           </Form.Group>
 

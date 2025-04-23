@@ -81,3 +81,14 @@ export const getArchivedPlants = async () => {
     return [];
   }
 };
+
+// ✅ Unarchive a plant
+export const unarchivePlant = async (id) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/${id}`, { archived: false });
+    return response.data;
+  } catch (error) {
+    console.error('Error unarchiving plant:', error);
+    return null;
+  }
+};

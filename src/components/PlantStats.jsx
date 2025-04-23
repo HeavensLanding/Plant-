@@ -1,29 +1,36 @@
-import { Card } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { getPlants } from '../api/PlantActions';
+import '../PlantStats.css';
 
-function PlantStats({ plants }) {
-  const totalPlants = plants.length;
+function PlantStats({ showArchived = true }) {
+  const [activeCount, setActiveCount] = useState(0);
+  const [archivedCount, setArchivedCount] = useState(0);
 
-  const needsWater = plants.filter((plant) => {
-    const today = new Date();
-    const lastWatered = new Date(plant.last_watered);
-    const daysSinceWatered = Math.floor((today - lastWatered) / (1000 * 60 * 60 * 24));
+  useEffect(() => {
+    const fetchData = async () => {
+      const allPlants = await getPlants();
+      const active = allPlants.filter(p => !p.archived);
+      const archived = allPlants.filter(p => p.archived);
 
-    const match = plant.water_schedule?.match(/\d+/);
-    const scheduleDays = match ? parseInt(match[0]) : Infinity;
+      setActiveCount(active.length);
+      setArchivedCount(archived.length);
+    };
 
-    return daysSinceWatered >= scheduleDays;
-  }).length;
+    fetchData();
+  }, []);
 
   return (
-    <Card className="mb-4 shadow-sm">
-      <Card.Body>
-        <Card.Title>🌿 Plant Dashboard</Card.Title>
-        <Card.Text>
-          <strong>Total Plants:</strong> {totalPlants} <br />
-          <strong>Need Water Today:</strong> {needsWater}
-        </Card.Text>
-      </Card.Body>
-    </Card>
+    <div className="plant-stats plant-stats-widget mt-4 mb-5 text-center">
+      <h2 className="dashboard-heading">🌟 Garden Overview</h2>
+      <p className="dashboard-stat">
+        🪴 <strong>Active Plants:</strong> {activeCount}
+      </p>
+      {showArchived && (
+        <p className="dashboard-stat">
+          📦 <strong>Archived Plants:</strong> {archivedCount}
+        </p>
+      )}
+    </div>
   );
 }
 

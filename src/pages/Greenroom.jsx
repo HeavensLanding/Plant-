@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getPlants, deletePlant, updatePlant } from '../api/PlantActions';
+import { getArchivedPlants, unarchivePlant } from '../api/PlantActions';
 import MyPlantCard from '../components/MyPlantCard';
 import '../Greenroom.css';
 
@@ -8,33 +8,19 @@ function Greenroom() {
 
   useEffect(() => {
     const fetchArchived = async () => {
-      const allPlants = await getPlants();
-      const archived = allPlants.filter(p => p.archived === true);
-      setArchivedPlants(archived);
+      const data = await getArchivedPlants();
+      setArchivedPlants(data);
     };
-
     fetchArchived();
   }, []);
 
-  const handleDelete = async (id) => {
-    const confirm = window.confirm('Are you sure you want to delete this plant permanently?');
-    if (!confirm) return;
-
-    const success = await deletePlant(id);
-    if (success) {
-      setArchivedPlants(prev => prev.filter(p => p.id !== id));
-    }
-  };
-
   const handleUnarchive = async (id) => {
-    const updated = await updatePlant(id, { archived: false });
-    if (updated) {
-      setArchivedPlants(prev => prev.filter(p => p.id !== id));
-    }
+    await unarchivePlant(id);
+    setArchivedPlants((prev) => prev.filter((plant) => plant.id !== id));
   };
 
   return (
-    <div className="text-center mt-5 container">
+    <div className="greenroom-wrapper">
       <h2 className="greenroom-title">Greenroom</h2>
       <p className="greenroom-subtitle">Your peaceful archive of past plants</p>
 
@@ -44,12 +30,7 @@ function Greenroom() {
         ) : (
           archivedPlants.map((plant) => (
             <div className="col-md-4 mb-4" key={plant.id}>
-              <MyPlantCard
-                plant={plant}
-                onDelete={handleDelete}
-                onUnarchive={handleUnarchive}
-                isArchived={true}
-              />
+              <MyPlantCard plant={plant} onUnarchive={handleUnarchive} />
             </div>
           ))
         )}

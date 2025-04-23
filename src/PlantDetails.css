@@ -1,0 +1,44 @@
+.leafy-card {
+    background-image: url('/leaf_background.jpg'); /* Make sure this file is in your /public folder */
+    background-size: cover;
+    background-position: center;
+    border-radius: 20px;
+    padding: 2rem;
+    color: var(--text-dark);
+    position: relative;
+    z-index: 1;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--silver);
+  }
+  
+  /* Optional: white overlay for readability */
+  .leafy-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    z-index: -1;
+  }
+  
+  /* For water history list */
+  .leafy-card ul {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  
+  /* For notes textarea */
+  #plantNotes {
+    background-color: #fffdfd;
+    border: 2px solid var(--rose-gold);
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(183, 110, 121, 0.1);
+  }
+  
+  #plantNotes:focus {
+    border-color: var(--yellow-gold);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+  
