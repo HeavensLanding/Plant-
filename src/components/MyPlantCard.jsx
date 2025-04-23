@@ -1,51 +1,100 @@
-import { useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import NextWaterDate from './NextWaterDate';
 import { format, parseISO } from 'date-fns';
 
-
 function MyPlantCard({ plant, onDelete, onWater }) {
-  const [hovered, setHovered] = useState(false);
+  let formattedLastWatered = 'N/A';
+
+  try {
+    if (typeof plant.last_watered === 'string') {
+      formattedLastWatered = format(parseISO(plant.last_watered), 'MMMM d, yyyy');
+    } else if (typeof plant.last_watered === 'number') {
+      formattedLastWatered = format(new Date(plant.last_watered * 1000), 'MMMM d, yyyy');
+    }
+  } catch (error) {
+    console.warn('Invalid last_watered:', plant.last_watered);
+  }
 
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <Card className={hovered ? 'sparkle-hover' : ''}>
-        <Card.Body>
-          <Card.Title>{plant.name}</Card.Title>
+    <Card className="plant-card mb-4">
+      <Card.Body className="card-body position-relative">
+        {/* ✨ Sparkle shimmer layer */}
+        <div className="sparkle-overlay" />
 
-          <Card.Text>
-            <strong>Type:</strong> {plant.type} <br />
-            <strong>Last Watered:</strong>{' '}
-                {plant.last_watered ? format(parseISO(plant.last_watered), 'MMMM d, yyyy') : 'N/A'} <br />
-            <strong>Water Schedule (in days):</strong> {plant.water_schedule}
-          </Card.Text>
+        <Card.Title className="text-center fs-4" style={{ color: 'var(--rose-gold)' }}>
+          {plant.name}
+        </Card.Title>
 
-          {/* 🌿 Custom component for next water date */}
-          <NextWaterDate
-            lastWatered={plant.last_watered}
-            schedule={plant.water_schedule}
-          />
+        <Card.Text className="mt-2">
+          <strong>🌿 Type:</strong> {plant.type || 'N/A'} <br />
+          <strong>🗓️ Last Watered:</strong> {formattedLastWatered} <br />
+          <strong>⏳ Water Schedule (Days):</strong>{' '}
+          {typeof plant.water_schedule === 'string'
+            ? plant.water_schedule.match(/\d+/)?.[0] || 'N/A'
+            : 'N/A'}
+        </Card.Text>
 
-          <div className="d-flex justify-content-between flex-wrap gap-2 mt-3">
-            <Button variant="info" onClick={() => onWater(plant.id)}>
-              💧 Mark as Watered
-            </Button>
+        <NextWaterDate
+          lastWatered={plant.last_watered}
+          schedule={plant.water_schedule}
+        />
 
-            <Link to={`/edit/${plant.id}`} className="btn btn-warning">
-              ✏️ Edit
-            </Link>
-
-            <Button variant="danger" onClick={() => onDelete(plant.id)}>
-              🗑️ Delete
-            </Button>
+        {/* 💧 Water History */}
+        {Array.isArray(plant.water_history) && plant.water_history.length > 0 && (
+          <div style={{ marginTop: '1rem' }}>
+            <strong>💧 Watered On:</strong>
+            <ul className="ps-3 mb-2">
+              {plant.water_history
+                .slice()
+                .reverse()
+                .map((date, idx) => {
+                  try {
+                    const prettyDate =
+                      typeof date === 'string'
+                        ? format(parseISO(date), 'MMMM d, yyyy')
+                        : 'N/A';
+                    return <li key={idx}>{prettyDate}</li>;
+                  } catch (e) {
+                    console.warn(`❌ Bad date format at index ${idx}`, date);
+                    return null;
+                  }
+                })}
+            </ul>
           </div>
-        </Card.Body>
-      </Card>
-    </div>
+        )}
+
+        <div className="d-flex justify-content-between align-items-center mt-4">
+          <Button
+            variant="info"
+            onClick={() => onWater(plant.id)}
+            className="fw-bold"
+            style={{ borderRadius: '30px' }}
+          >
+            💧 Water
+          </Button>
+
+          <div>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => onDelete(plant.id)}
+              className="me-2 fw-semibold"
+              style={{ borderRadius: '30px' }}
+            >
+              Delete
+            </Button>
+            <Link
+              to={`/edit/${plant.id}`}
+              className="btn btn-warning btn-sm fw-semibold"
+              style={{ borderRadius: '30px' }}
+            >
+              Edit
+            </Link>
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
   );
 }
 

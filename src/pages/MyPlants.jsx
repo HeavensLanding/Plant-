@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
-import { getPlants, deletePlant, addPlant, updatePlant } from '../api/plantActions';
+import {
+  getPlants,
+  deletePlant,
+  addPlant,
+  updatePlant,
+  markPlantWatered,
+} from '../api/plantActions';
 import { Button, Row, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -13,8 +19,8 @@ function MyPlants() {
 
   useEffect(() => {
     const fetchPlants = async () => {
-      const plantsData = await getPlants();
-      setPlants(plantsData);
+      const data = await getPlants();
+      setPlants(data);
     };
     fetchPlants();
   }, []);
@@ -23,12 +29,12 @@ function MyPlants() {
     const plantToDelete = plants.find((p) => p.id === id);
     const success = await deletePlant(id);
     if (success) {
-      setPlants((prev) => prev.filter((plant) => plant.id !== id));
+      setPlants((prev) => prev.filter((p) => p.id !== id));
 
       const undo = () => {
-        addPlant(plantToDelete).then((restoredPlant) => {
-          setPlants((prev) => [...prev, restoredPlant]);
-          toast.success(`🌿 ${restoredPlant.name} restored!`);
+        addPlant(plantToDelete).then((restored) => {
+          setPlants((prev) => [...prev, restored]);
+          toast.success(`🌿 ${restored.name} restored!`);
         });
       };
 
@@ -66,18 +72,13 @@ function MyPlants() {
   };
 
   const handleWater = async (id) => {
-    const wateredPlant = plants.find((p) => p.id === id);
-    const updatedPlant = {
-      ...wateredPlant,
-      last_watered: new Date().toISOString().split('T')[0],
-    };
-
-    const success = await updatePlant(id, updatedPlant);
-    if (success) {
+    const plant = plants.find((p) => p.id === id);
+    const updated = await markPlantWatered(id, plant.water_history || []);
+    if (updated) {
       setPlants((prev) =>
-        prev.map((p) => (p.id === id ? success : p))
+        prev.map((p) => (p.id === id ? updated : p))
       );
-      toast.success(`💧 ${success.name} was watered!`);
+      toast.success(`💧 ${updated.name} watered!`);
     }
   };
 

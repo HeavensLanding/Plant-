@@ -1,6 +1,7 @@
-import axios, { BASE_URL } from './plantAPI';
+import { axios, BASE_URL } from './plantAPI';
 
-// Fetch all plants
+
+// ✅ Get all plants
 export const getPlants = async () => {
   try {
     const response = await axios.get(BASE_URL);
@@ -11,7 +12,7 @@ export const getPlants = async () => {
   }
 };
 
-// Add a new plant
+// ✅ Add a new plant
 export const addPlant = async (newPlant) => {
   try {
     const response = await axios.post(BASE_URL, newPlant);
@@ -22,7 +23,7 @@ export const addPlant = async (newPlant) => {
   }
 };
 
-// Update a plant
+// ✅ Update an existing plant
 export const updatePlant = async (id, updatedPlant) => {
   try {
     const response = await axios.put(`${BASE_URL}/${id}`, updatedPlant);
@@ -33,7 +34,7 @@ export const updatePlant = async (id, updatedPlant) => {
   }
 };
 
-// Delete a plant
+// ✅ Delete a plant
 export const deletePlant = async (id) => {
   try {
     await axios.delete(`${BASE_URL}/${id}`);
@@ -44,12 +45,15 @@ export const deletePlant = async (id) => {
   }
 };
 
-// Mark plant as watered
-export const markPlantWatered = async (id) => {
+// ✅ Mark a plant as watered and add to water history
+export const markPlantWatered = async (id, currentHistory = []) => {
   const today = new Date().toISOString().split('T')[0];
+  const newHistory = [...(currentHistory || []), today];
+
   try {
     const response = await axios.put(`${BASE_URL}/${id}`, {
       last_watered: today,
+      water_history: newHistory
     });
     return response.data;
   } catch (error) {
